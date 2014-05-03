@@ -2,58 +2,38 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://taion809.github.io/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket/</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
+        <lastmod>2014-05-03T14:03:30+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/blog/2013/09/21/splitting-mysql-dumps/</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
+        <lastmod>2014-05-03T13:58:42+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service/</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
+        <lastmod>2014-05-03T14:06:05+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux/</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
-    </url>
-    <url>
-        <loc>http://taion809.github.io/assets/bootstrap/about.html</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
-    </url>
-    <url>
-        <loc>http://taion809.github.io/assets/bootstrap/components.html</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
-    </url>
-    <url>
-        <loc>http://taion809.github.io/assets/bootstrap/css.html</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
+        <lastmod>2014-05-03T13:58:42+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/assets/bootstrap/customize.html</loc>
-        <lastmod>2014-04-19T20:22:45+00:00</lastmod>
-    </url>
-    <url>
-        <loc>http://taion809.github.io/assets/bootstrap/getting-started.html</loc>
-        <lastmod>2014-04-19T20:22:46+00:00</lastmod>
+        <lastmod>2014-05-03T13:58:40+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/assets/bootstrap/</loc>
-        <lastmod>2014-04-19T20:22:46+00:00</lastmod>
-    </url>
-    <url>
-        <loc>http://taion809.github.io/assets/bootstrap/javascript.html</loc>
-        <lastmod>2014-04-19T20:22:46+00:00</lastmod>
+        <lastmod>2014-05-03T14:06:05+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/blog/archives/</loc>
-        <lastmod>2014-04-19T20:22:46+00:00</lastmod>
+        <lastmod>2014-05-03T14:06:05+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/</loc>
-        <lastmod>2014-04-19T20:22:46+00:00</lastmod>
+        <lastmod>2014-05-03T14:06:05+00:00</lastmod>
     </url>
     <url>
         <loc>http://taion809.github.io/robots.txt</loc>
-        <lastmod>2014-04-19T20:22:46+00:00</lastmod>
+        <lastmod>2014-05-03T13:26:10+00:00</lastmod>
     </url>
 </urlset>
