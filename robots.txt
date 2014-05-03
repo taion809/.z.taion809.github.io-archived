@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://taion809.github.io/sitemap.xml 

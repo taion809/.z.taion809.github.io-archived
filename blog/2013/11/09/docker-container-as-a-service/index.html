@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Docker container as a service - Redstalker</title>
+  <meta name="author" content="Nicholas Johns">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Redstalker" type="application/atom+xml">
+
+  <link href="/assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="/stylesheets/flatty.min.css" rel="stylesheet" type="text/css">
+<!-- link href="/assets/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" -->
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-43022143-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Redstalker</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:taion809.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-11-09T01:31:00+00:00" pubdate data-updated="true">Nov 9<span>th</span>, 2013</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://taion809.github.io">Comments</a>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        Docker Container as a Service
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix"><p>Recently we had one of our important clients come to us with a node.js application they needed updated.  I’m not sure of the circumstances surrounding this application but it looked and felt like a ball of spaghetti was thrown in my face.  I punted the modifications to another developer in favor of doing the deployment with docker and supervisord.</p>
+
+<!-- more -->
+
+
+<h3>The Problem</h3>
+
+<p>This node.js application has many assumptions about libraries and file locations that make me cringe, for example it simply won’t work unless packages are installed globally <strong>and</strong> locally.</p>
+
+<h3>The Solution</h3>
+
+<p>Build a docker image containing the application so that it could be deployed without touching anything outside of its container, think like a chroot.</p>
+
+<h3>Let’s Do It!</h3>
+
+<p>The application we will be using can be found in my <a href="https://github.com/taion809/hello-node">github repository</a>.</p>
+
+<p>The following Dockerfile will be used to build our image.  We are using Dockerfiles because it  makes building images simple, versioned, and easily distributable.</p>
+
+<p>Our Dockerfile</p>
+
+<div><script src='https://gist.github.com/7380804.js?file=Dockerfile'></script>
+<noscript><pre><code>FROM            ubuntu
+MAINTAINER      Nicholas Johns &quot;nicholas.a.johns5@gmail.com&quot;
+
+# Force update
+# install python-software-properties for adding PPA's
+RUN echo &quot;deb http://archive.ubuntu.com/ubuntu precise main universe&quot; &gt; /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y python-software-properties
+
+# Add node.js legacy (0.8) ppa
+RUN add-apt-repository -y ppa:chris-lea/node.js-legacy
+RUN apt-get update
+
+#Install node.js
+RUN apt-get install -y nodejs npm nodejs-dev
+
+# Add repository contents
+ADD . /srv/application/
+
+# Change working dir (for ENTRYPOINT and CMD later)
+WORKDIR /srv/application
+
+# Install libraries locally
+RUN npm install
+
+# Expose port 80 to the host
+EXPOSE 80
+
+# The command executed on docker run, cannot be overwritten 
+# allows you to run simply docker run image and /usr/bin/nodejs will be executed
+# along with the arguments passed in the CMD directive
+ENTRYPOINT [&quot;/usr/bin/nodejs&quot;]
+
+# Default options, can pass nodejs flags here.
+CMD [&quot;server.js&quot;]</code></pre></noscript></div>
+
+
+<p>In order to build our image from this Dockerfile we will execute the following command.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo docker build -t='johnsn/webapp' . </span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should see output like the following</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Excerpt
+</span><span class='line'>Step 14 : ENTRYPOINT ["/usr/bin/nodejs"]
+</span><span class='line'> ---&gt; Running in 0db9a210f33c
+</span><span class='line'> ---&gt; a82cdefae38d
+</span><span class='line'>Step 15 : CMD ["server.js"]
+</span><span class='line'> ---&gt; Running in c11ec2908881
+</span><span class='line'> ---&gt; 439913416e8f
+</span><span class='line'>Successfully built 439913416e8f</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can now make the choice to push your image to the docker.io registry, a private registry, or not push at all.  If you chose to push it to a registry you will need to use the docker push command.</p>
+
+<p>From here use docker run to create and start a container so we can verify the build worked.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo docker run -d -p 5000:80 johnsn/webapp</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should receive output like the following, we used the -p flag to map our host port 5000 to the container port 80 which we exposed in the Dockerfile</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Your container ID will be returned
+</span><span class='line'>3f1a9b9ac4e4</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Verify with curl</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -v localhost:5000</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At this point we have a web application running inside a docker container we can serve on port 5000.  But, we have a problem, after a reboot we need to manually run the docker run command to bring up our web app again.  Let’s solve that problem with supervisord.</p>
+
+<p>Supervisord is really simple and convenient which is why I am using it over something like daemontools.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[program:webapp]
+</span><span class='line'>command=/usr/bin/docker run -p 5000:80 johnsn/webapp
+</span><span class='line'>autostart=true
+</span><span class='line'>autorestart=true</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice we do not use the -d flag, this is because Supervisord will run our container as a daemon.</p>
+
+<p>Now restart the supervisord service with <code>service</code> or using <code>supervisorctl</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># sudo service supervisor restart does not work :\
+</span><span class='line'>
+</span><span class='line'>sudo service supervisor stop
+</span><span class='line'>sudo service supervisor start</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Verify</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ps aux | grep webapp
+</span><span class='line'>
+</span><span class='line'># root      8964  0.0  0.7 186948  3600 ?        Sl   03:54   0:00 /usr/bin/docker run -p 5000:80 johnsn/webapp</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- Logging options here… sometime. -->
+
+
+<p>Alright, so let’s setup nginx properly so we can have webapp.com instead of webapp.com:5000</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>## HTTP server.
+</span><span class='line'>server {
+</span><span class='line'>    listen 80; # IPv4
+</span><span class='line'>
+</span><span class='line'>    server_name webapp.com;
+</span><span class='line'>
+</span><span class='line'>    ## Access and error logs.
+</span><span class='line'>    access_log /var/log/nginx/webapp.com_access.log;
+</span><span class='line'>    error_log /var/log/nginx/webapp.com_error.log;
+</span><span class='line'>
+</span><span class='line'>    location / {
+</span><span class='line'>        proxy_set_header X-Forwarded-Host $host;
+</span><span class='line'>        proxy_set_header X-Forwarded-Server $host;
+</span><span class='line'>        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span><span class='line'>        proxy_pass http://127.0.0.1:5000;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>} # HTTP server</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart the nginx and verify!</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -v webapp.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That is it, 30 minutes later we have an immutable linux container for our web app that we can then deploy to a single server or many servers.</p>
+
+<p>Please let me know if you see errors, have corrections, or know a better way.</p>
+
+<h3>References</h3>
+
+<ul>
+<li><a href="http://docker.io">Docker</a></li>
+<li><a href="http://supervisord.org/">Supervisord</a></li>
+</ul>
+
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Nicholas Johns</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-11-09T01:31:00+00:00" pubdate data-updated="true">Nov 9<span>th</span>, 2013</time>
+          
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service/" data-via="redstalker_nick" data-counturl="http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2013/09/21/splitting-mysql-dumps/" title="Previous Post: Splitting Mysql Dumps">&laquo; Splitting Mysql Dumps</a></li>
+            
+            
+            <li class="next"><a href="/blog/2014/04/19/getting-started-gorilla-mux/" title="Next Post: Getting Started: Gorilla MUX">Getting Started: Gorilla MUX &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+      <section>
+        <h1>Comments</h1>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2014/04/19/getting-started-gorilla-mux/">Getting Started: Gorilla MUX</a>
+    
+    <a class="list-group-item active" href="/blog/2013/11/09/docker-container-as-a-service/">Docker Container as a Service</a>
+    
+    <a class="list-group-item " href="/blog/2013/09/21/splitting-mysql-dumps/">Splitting Mysql Dumps</a>
+    
+    <a class="list-group-item " href="/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket/">Jenkins CI Deployment With Bitbucket</a>
+    
+  </div>
+</section>
+
+
+
+
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2014 - Nicholas Johns<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/assets/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'redstalker';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service/';
+        var disqus_url = 'http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<script src="/javascripts/devcheck.js" type="text/javascript"> </script>
+
+
+  </body>
+</html>

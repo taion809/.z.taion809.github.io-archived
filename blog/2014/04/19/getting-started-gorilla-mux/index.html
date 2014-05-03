@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Redstalker</title>
+  <title>Getting Started: Gorilla MUX - Redstalker</title>
   <meta name="author" content="Nicholas Johns">
 
   
@@ -16,7 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://taion809.github.io">
+  <link rel="canonical" href="http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="Redstalker" type="application/atom+xml">
 
@@ -93,12 +93,8 @@
         <div id="content">
           <div class="row">
   <div class="page-content col-md-9">
-    <div class="blog-index">
+    <article class="hentry" role="article">
       
-      
-      
-        <article class="post">
-          
   <header class="page-header">
     
       <p class="meta text-muted text-uppercase">
@@ -117,18 +113,21 @@
 
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-19T16:05:00+00:00" pubdate data-updated="true">Apr 19<span>th</span>, 2014</time>
         
-           | <a href="/blog/2014/04/19/getting-started-gorilla-mux/#disqus_thread"
-             data-disqus-identifier="http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux/">Comments</a>
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://taion809.github.io">Comments</a>
         
       </p>
     
     
-      <h1 class="entry-title"><a href="/blog/2014/04/19/getting-started-gorilla-mux/">Getting Started: Gorilla MUX</a></h1>
+    <h1 class="entry-title">
+        Getting Started: Gorilla MUX
+        
+    </h1>
     
   </header>
 
 
-  <div class="entry-content clearfix"><p>This is going to be short an sweet.  I have been looking at getting into Go for awhile but lacked incentive.  That has, as of a week ago, changed and it&rsquo;s full speed ahead.</p>
+<div class="entry-content clearfix"><p>This is going to be short an sweet.  I have been looking at getting into Go for awhile but lacked incentive.  That has, as of a week ago, changed and it&rsquo;s full speed ahead.</p>
 
 <h4>Let&rsquo;s get a flat file blog going!</h4>
 
@@ -215,64 +214,16 @@
 
 <p>As always, if there are errors or you have a suggestion send me a message.</p>
 </div>
-  
-  
 
 
-        </article>
-      
-      
-        <article class="post">
+      <footer>
+        <p class="meta text-muted">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-11-09T01:31:00+00:00" pubdate data-updated="true">Nov 9<span>th</span>, 2013</time>
-        
-           | <a href="/blog/2013/11/09/docker-container-as-a-service/#disqus_thread"
-             data-disqus-identifier="http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service/">Comments</a>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/09/docker-container-as-a-service/">Docker Container as a Service</a></h1>
-    
-  </header>
-
-
-  <div class="entry-content clearfix"><p>Recently we had one of our important clients come to us with a node.js application they needed updated.  I’m not sure of the circumstances surrounding this application but it looked and felt like a ball of spaghetti was thrown in my face.  I punted the modifications to another developer in favor of doing the deployment with docker and supervisord.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2013/11/09/docker-container-as-a-service/">Read on &rarr;</a>
-    </footer>
   
 
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Nicholas Johns</span></span>
 
-        </article>
-      
-      
-        <article class="post">
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
 
 
 
@@ -285,111 +236,51 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-09-21T10:27:00+00:00" pubdate data-updated="true">Sep 21<span>st</span>, 2013</time>
-        
-           | <a href="/blog/2013/09/21/splitting-mysql-dumps/#disqus_thread"
-             data-disqus-identifier="http://taion809.github.io/blog/2013/09/21/splitting-mysql-dumps/">Comments</a>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/21/splitting-mysql-dumps/">Splitting Mysql Dumps</a></h1>
-    
-  </header>
-
-
-  <div class="entry-content clearfix"><p>The version of phpMyAdmin on Rackspace Cloud Sites has a hard limit of 16Mb for imported SQL. I recently had to migrate a database that was over 500Mb.</p>
-
-<p>The solution was simple but tedious, export the database schema first and import it in phpMyAdmin then separate the data into many separate files below 16Mb.</p>
-
-<p>I came up with a lot of ridiculous solutions using python, perl, combinations of science and voodoo until I realized the solution already existed, Linux. Utilizing the split and sed we can split the database dump into many small parts.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2013/09/21/splitting-mysql-dumps/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post">
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-04-19T16:05:00+00:00" pubdate data-updated="true">Apr 19<span>th</span>, 2014</time>
           
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
+
+
+        </p>
         
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-08-20T13:23:00+00:00" pubdate data-updated="true">Aug 20<span>th</span>, 2013</time>
-        
-           | <a href="/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket/#disqus_thread"
-             data-disqus-identifier="http://taion809.github.io/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket/">Comments</a>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket/">Jenkins CI Deployment With Bitbucket</a></h1>
-    
-  </header>
-
-
-  <div class="entry-content clearfix"><p>I recently had someone ask me how to get started with Jenkins-CI, git, and ssh. My team is using it now for a CI-git deployment scheme but I was not the one to install or configure it. I didn’t really want to let down my friend with an “I don’t know, google it” answer so I spun up a new EC2 instance on Amazon AWS, installed Jenkins, pushed a new private repo to bitbucket, pulled and deployed that push on my Jenkins test server.</p>
-
-<p>Setting up a t1.micro EC2 instance in Amazon AWS is simple enough so we can skip that.</p>
-
-<p>Steps for installing Jenkins-CI can be found on its homepage so we can safely skip that as well. (Note: for this test I was not using jenkins behind a webserver proxy)</p>
-
-<p>For the following steps I executed them as the jenkins user, you may do it another way if you wish, this is simply how I did it.</p>
-
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux/" data-via="redstalker_nick" data-counturl="http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket/">Read on &rarr;</a>
-    </footer>
-  
 
-
-        </article>
-      
-    </div>
-
-    <ul class="pager">
-      
-        <li class="previous disabled"><a href="#">&larr;&nbsp;Older</a></li>
-      
-      <li><a href="/blog/archives">Blog Archives</a></li>
-      
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
-      
-    </ul>
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2013/11/09/docker-container-as-a-service/" title="Previous Post: Docker container as a service">&laquo; Docker container as a service</a></li>
+            
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+      <section>
+        <h1>Comments</h1>
+        <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+      </section>
+    
   </div>
 
   
-    <aside class="sidebar col-md-3">
-      
-        <section class="panel panel-default">
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Recent Posts</h3>
   </div>
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/2014/04/19/getting-started-gorilla-mux/">Getting Started: Gorilla MUX</a>
+    <a class="list-group-item active" href="/blog/2014/04/19/getting-started-gorilla-mux/">Getting Started: Gorilla MUX</a>
     
     <a class="list-group-item " href="/blog/2013/11/09/docker-container-as-a-service/">Docker Container as a Service</a>
     
@@ -405,8 +296,8 @@
 
 
 
-      
-    </aside>
+    
+  </aside>
   
 </div>
 
@@ -432,7 +323,10 @@
       var disqus_shortname = 'redstalker';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux/';
+        var disqus_url = 'http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

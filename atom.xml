@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Redstalker]]></title>
+  <link href="http://taion809.github.io/atom.xml" rel="self"/>
+  <link href="http://taion809.github.io/"/>
+  <updated>2014-04-19T20:23:26+00:00</updated>
+  <id>http://taion809.github.io/</id>
+  <author>
+    <name><![CDATA[Nicholas Johns]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Getting Started: Gorilla MUX]]></title>
+    <link href="http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux/"/>
+    <updated>2014-04-19T16:05:00+00:00</updated>
+    <id>http://taion809.github.io/blog/2014/04/19/getting-started-gorilla-mux</id>
+    <content type="html"><![CDATA[<p>This is going to be short an sweet.  I have been looking at getting into Go for awhile but lacked incentive.  That has, as of a week ago, changed and it&rsquo;s full speed ahead.</p>
+
+<h4>Let&rsquo;s get a flat file blog going!</h4>
+
+<p>For this I will be using <a href="http://www.gorillatoolkit.org/pkg/mux">Gorilla MUX</a>.  If you haven&rsquo;t taken a look at the Gorilla toolkit yet I highly recommend it.  I really enjoy using it, the use as individual components really resonates with me and my style of coding.</p>
+
+<h3>Setup</h3>
+
+<p>Setup for this is pretty fast, <code>go get github.com/gorilla/mux</code></p>
+
+<h3>The Meat and Potatos</h3>
+
+<p>The <code>main.go</code> for this is pretty simple, but if you haven&rsquo;t used <a href="http://golang.org/pkg/net/http/">net/http</a> from the Golang standard library you might be scratching your head trying to figure out what&rsquo;s going on.</p>
+
+<h5>Example main.go</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>    <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>    <span class="s">&quot;github.com/gorilla/mux&quot;</span>
+</span><span class='line'>    <span class="s">&quot;net/http&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">ArticleHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Article URI&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// Create a new Router instance</span>
+</span><span class='line'>    <span class="nx">router</span> <span class="o">:=</span> <span class="nx">mux</span><span class="p">.</span><span class="nx">NewRouter</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Add the URI /article to be handled by the ArticleHandler method</span>
+</span><span class='line'>    <span class="nx">router</span><span class="p">.</span><span class="nx">HandleFunc</span><span class="p">(</span><span class="s">&quot;/article&quot;</span><span class="p">,</span> <span class="nx">ArticleHandler</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Add the URI / to be handled by a closure</span>
+</span><span class='line'>    <span class="nx">router</span><span class="p">.</span><span class="nx">HandleFunc</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Root URI&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">})</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Pass our router to net/http</span>
+</span><span class='line'>    <span class="nx">http</span><span class="p">.</span><span class="nx">Handle</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span> <span class="nx">router</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Listen and serve on localhost:8080</span>
+</span><span class='line'>    <span class="nx">http</span><span class="p">.</span><span class="nx">ListenAndServe</span><span class="p">(</span><span class="s">&quot;:8080&quot;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Alright, that&rsquo;s cool so what do we do with it?</p>
+
+<p>Well, sounds like a great way build a back end service and a separate front end application using something like AngularJS.</p>
+
+<p>Next article I will go into more detail.  Until then, you can check out the code for this series here: <a href="https://github.com/taion809/go-helloblog">HelloBlog</a></p>
+
+<p>As always, if there are errors or you have a suggestion send me a message.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Docker container as a service]]></title>
+    <link href="http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service/"/>
+    <updated>2013-11-09T01:31:00+00:00</updated>
+    <id>http://taion809.github.io/blog/2013/11/09/docker-container-as-a-service</id>
+    <content type="html"><![CDATA[<p>Recently we had one of our important clients come to us with a node.js application they needed updated.  I’m not sure of the circumstances surrounding this application but it looked and felt like a ball of spaghetti was thrown in my face.  I punted the modifications to another developer in favor of doing the deployment with docker and supervisord.</p>
+
+<!-- more -->
+
+
+<h3>The Problem</h3>
+
+<p>This node.js application has many assumptions about libraries and file locations that make me cringe, for example it simply won’t work unless packages are installed globally <strong>and</strong> locally.</p>
+
+<h3>The Solution</h3>
+
+<p>Build a docker image containing the application so that it could be deployed without touching anything outside of its container, think like a chroot.</p>
+
+<h3>Let’s Do It!</h3>
+
+<p>The application we will be using can be found in my <a href="https://github.com/taion809/hello-node">github repository</a>.</p>
+
+<p>The following Dockerfile will be used to build our image.  We are using Dockerfiles because it  makes building images simple, versioned, and easily distributable.</p>
+
+<p>Our Dockerfile</p>
+
+<div><script src='https://gist.github.com/7380804.js?file=Dockerfile'></script>
+<noscript><pre><code>FROM            ubuntu
+MAINTAINER      Nicholas Johns &quot;nicholas.a.johns5@gmail.com&quot;
+
+# Force update
+# install python-software-properties for adding PPA's
+RUN echo &quot;deb http://archive.ubuntu.com/ubuntu precise main universe&quot; &gt; /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y python-software-properties
+
+# Add node.js legacy (0.8) ppa
+RUN add-apt-repository -y ppa:chris-lea/node.js-legacy
+RUN apt-get update
+
+#Install node.js
+RUN apt-get install -y nodejs npm nodejs-dev
+
+# Add repository contents
+ADD . /srv/application/
+
+# Change working dir (for ENTRYPOINT and CMD later)
+WORKDIR /srv/application
+
+# Install libraries locally
+RUN npm install
+
+# Expose port 80 to the host
+EXPOSE 80
+
+# The command executed on docker run, cannot be overwritten 
+# allows you to run simply docker run image and /usr/bin/nodejs will be executed
+# along with the arguments passed in the CMD directive
+ENTRYPOINT [&quot;/usr/bin/nodejs&quot;]
+
+# Default options, can pass nodejs flags here.
+CMD [&quot;server.js&quot;]</code></pre></noscript></div>
+
+
+<p>In order to build our image from this Dockerfile we will execute the following command.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo docker build -t='johnsn/webapp' . </span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should see output like the following</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Excerpt
+</span><span class='line'>Step 14 : ENTRYPOINT ["/usr/bin/nodejs"]
+</span><span class='line'> ---&gt; Running in 0db9a210f33c
+</span><span class='line'> ---&gt; a82cdefae38d
+</span><span class='line'>Step 15 : CMD ["server.js"]
+</span><span class='line'> ---&gt; Running in c11ec2908881
+</span><span class='line'> ---&gt; 439913416e8f
+</span><span class='line'>Successfully built 439913416e8f</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can now make the choice to push your image to the docker.io registry, a private registry, or not push at all.  If you chose to push it to a registry you will need to use the docker push command.</p>
+
+<p>From here use docker run to create and start a container so we can verify the build worked.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo docker run -d -p 5000:80 johnsn/webapp</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should receive output like the following, we used the -p flag to map our host port 5000 to the container port 80 which we exposed in the Dockerfile</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Your container ID will be returned
+</span><span class='line'>3f1a9b9ac4e4</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Verify with curl</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -v localhost:5000</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At this point we have a web application running inside a docker container we can serve on port 5000.  But, we have a problem, after a reboot we need to manually run the docker run command to bring up our web app again.  Let’s solve that problem with supervisord.</p>
+
+<p>Supervisord is really simple and convenient which is why I am using it over something like daemontools.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[program:webapp]
+</span><span class='line'>command=/usr/bin/docker run -p 5000:80 johnsn/webapp
+</span><span class='line'>autostart=true
+</span><span class='line'>autorestart=true</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Notice we do not use the -d flag, this is because Supervisord will run our container as a daemon.</p>
+
+<p>Now restart the supervisord service with <code>service</code> or using <code>supervisorctl</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># sudo service supervisor restart does not work :\
+</span><span class='line'>
+</span><span class='line'>sudo service supervisor stop
+</span><span class='line'>sudo service supervisor start</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Verify</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ps aux | grep webapp
+</span><span class='line'>
+</span><span class='line'># root      8964  0.0  0.7 186948  3600 ?        Sl   03:54   0:00 /usr/bin/docker run -p 5000:80 johnsn/webapp</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!-- Logging options here… sometime. -->
+
+
+<p>Alright, so let’s setup nginx properly so we can have webapp.com instead of webapp.com:5000</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>## HTTP server.
+</span><span class='line'>server {
+</span><span class='line'>    listen 80; # IPv4
+</span><span class='line'>
+</span><span class='line'>    server_name webapp.com;
+</span><span class='line'>
+</span><span class='line'>    ## Access and error logs.
+</span><span class='line'>    access_log /var/log/nginx/webapp.com_access.log;
+</span><span class='line'>    error_log /var/log/nginx/webapp.com_error.log;
+</span><span class='line'>
+</span><span class='line'>    location / {
+</span><span class='line'>        proxy_set_header X-Forwarded-Host $host;
+</span><span class='line'>        proxy_set_header X-Forwarded-Server $host;
+</span><span class='line'>        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+</span><span class='line'>        proxy_pass http://127.0.0.1:5000;
+</span><span class='line'>    }
+</span><span class='line'>
+</span><span class='line'>} # HTTP server</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart the nginx and verify!</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -v webapp.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That is it, 30 minutes later we have an immutable linux container for our web app that we can then deploy to a single server or many servers.</p>
+
+<p>Please let me know if you see errors, have corrections, or know a better way.</p>
+
+<h3>References</h3>
+
+<ul>
+<li><a href="http://docker.io">Docker</a></li>
+<li><a href="http://supervisord.org/">Supervisord</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Splitting Mysql Dumps]]></title>
+    <link href="http://taion809.github.io/blog/2013/09/21/splitting-mysql-dumps/"/>
+    <updated>2013-09-21T10:27:00+00:00</updated>
+    <id>http://taion809.github.io/blog/2013/09/21/splitting-mysql-dumps</id>
+    <content type="html"><![CDATA[<p>The version of phpMyAdmin on Rackspace Cloud Sites has a hard limit of 16Mb for imported SQL. I recently had to migrate a database that was over 500Mb.</p>
+
+<p>The solution was simple but tedious, export the database schema first and import it in phpMyAdmin then separate the data into many separate files below 16Mb.</p>
+
+<p>I came up with a lot of ridiculous solutions using python, perl, combinations of science and voodoo until I realized the solution already existed, Linux. Utilizing the split and sed we can split the database dump into many small parts.</p>
+
+<!--more-->
+
+
+<h4>Split</h4>
+
+<p>In order to split the file effectively it will take a little experimentation (this is really fast though so it shouldn&rsquo;t take long to figure out).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>split -l 40000 big_giant_db.dump
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Will split a file into individual files with 40,000 lines each. Splitting this way will yield files of varying sizes and depending on the data you may still have files over 16Mb which will need to be dealt with in the same way (kind of like recursion, no?).</p>
+
+<h4>Processing</h4>
+
+<p>I needed to disable foreign key constraints and wrap each file in a transaction but editing 90 individual files is a pain in the butt, so let&rsquo;s skip that and do it with sed!</p>
+
+<p>The following command will build a list of files starting with &lsquo;x&rsquo;, which is the output from split, and run sed against them to place text in the beginning of the file.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find ./x* -type f -print0 | <span class="k">while </span><span class="nv">IFS</span><span class="o">=</span> <span class="nb">read</span> -r -d <span class="s1">&#39;&#39;</span> filename;<span class="se">\</span>
+</span><span class='line'><span class="k">do </span>sed -i <span class="s1">&#39;1s/^/\n\nSET FOREIGN_KEY_CHECKS=0;\nSET SQL_MODE = \&quot;NO_AUTO_VALUE_ON_ZERO\&quot;;\nSET AUTOCOMMIT = 0;\nSET time_zone = \&quot;+00:00\&quot;;\nSTART TRANSACTION;\n\n /&#39;</span> <span class="nv">$filename</span>;<span class="se">\</span>
+</span><span class='line'><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Holy crap! You thought you had escaped your sed and perl nightmares, didn&rsquo;t you?</p>
+
+<p>The output will look something like this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SET</span> <span class="n">FOREIGN_KEY_CHECKS</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">SET</span> <span class="n">SQL_MODE</span> <span class="o">=</span> <span class="ss">&quot;NO_AUTO_VALUE_ON_ZERO&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="k">SET</span> <span class="n">AUTOCOMMIT</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">SET</span> <span class="n">time_zone</span> <span class="o">=</span> <span class="ss">&quot;+00:00&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="k">START</span> <span class="n">TRANSACTION</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To finish up we need to add the sql commit and re enable foreign key checks, so let&rsquo;s get to it.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>find ./x* -type f -print0 | <span class="k">while </span><span class="nv">IFS</span><span class="o">=</span> <span class="nb">read</span> -r -d <span class="s1">&#39;&#39;</span> filename;<span class="se">\</span>
+</span><span class='line'><span class="k">do </span>sed -i <span class="s1">&#39;$s/$/\n\nCOMMIT;\nSET FOREIGN_KEY_CHECKS=1;\n\n /&#39;</span> <span class="nv">$filename</span>;<span class="se">\</span>
+</span><span class='line'><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Like the command before, this will append text to the bottom of each file generated by the find command.</p>
+
+<p>The output will look something like this</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">COMMIT</span><span class="p">;</span>
+</span><span class='line'><span class="k">SET</span> <span class="n">FOREIGN_KEY_CHECKS</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I hope this helped someone else, I apologize for formatting. If you know a better way to do this send me an email, twitter, comment, pull request, or smoke signal.</p>
+
+<h4>Update</h4>
+
+<p>So, had I read the damn Rackspace Cloud Sites KB in the first place I would have known that it is possible to import a database through a shell script</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="o">#!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</span><span class='line'><span class="n">mysql</span> <span class="o">-</span><span class="n">h</span> <span class="k">host</span><span class="o">-</span><span class="n">u</span> <span class="k">user</span> <span class="o">-</span><span class="n">p</span><span class="s1">&#39;password&#39;</span> <span class="n">db_name</span> <span class="o">&lt;</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="k">to</span><span class="o">/</span><span class="n">backup</span><span class="p">.</span><span class="k">sql</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>References</h4>
+
+<ol>
+<li><a href="https://gist.github.com/taion809/6603818">My gist</a></li>
+<li><a href="http://stackoverflow.com/questions/132902/how-do-i-split-the-output-from-mysqldump-into-smaller-files">Stackoverflow</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jenkins CI Deployment with Bitbucket]]></title>
+    <link href="http://taion809.github.io/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket/"/>
+    <updated>2013-08-20T13:23:00+00:00</updated>
+    <id>http://taion809.github.io/blog/2013/08/20/jenkins-ci-deployment-with-bitbucket</id>
+    <content type="html"><![CDATA[<p>I recently had someone ask me how to get started with Jenkins-CI, git, and ssh. My team is using it now for a CI-git deployment scheme but I was not the one to install or configure it. I didn’t really want to let down my friend with an “I don’t know, google it” answer so I spun up a new EC2 instance on Amazon AWS, installed Jenkins, pushed a new private repo to bitbucket, pulled and deployed that push on my Jenkins test server.</p>
+
+<p>Setting up a t1.micro EC2 instance in Amazon AWS is simple enough so we can skip that.</p>
+
+<p>Steps for installing Jenkins-CI can be found on its homepage so we can safely skip that as well. (Note: for this test I was not using jenkins behind a webserver proxy)</p>
+
+<p>For the following steps I executed them as the jenkins user, you may do it another way if you wish, this is simply how I did it.</p>
+
+<!--more-->
+
+
+<h4>Create SSH Keypair</h4>
+
+<p>Creating an SSH keypair for use with jenkins and bitbucket:
+From the server:</p>
+
+<pre><code>ssh-keygen -b 2048 -t rsa -c “Jenkins Deployment Keys” -f /output/path/privatekey
+chmod 0600 /output/path/privatekey
+</code></pre>
+
+<p>Note: for my test I built the keys and configured git as the jenkins user</p>
+
+<p>These sets of keys should be created with an empty password, for which you can simply press enter on the prompt.
+Configure SSH</p>
+
+<h4>Create a config to map the host and identity files</h4>
+
+<pre><code>vim /var/lib/jenkins/.ssh/config
+</code></pre>
+
+<p>My config file looks like this</p>
+
+<pre><code>Host jenkins-test-bitbucket
+    HostName bitbucket.org
+    User git
+    IdentityFile /var/lib/jenkins/.ssh/privatekey
+    IdentitiesOnly yes
+</code></pre>
+
+<h4>Add SSH public key to bitbucket</h4>
+
+<p>At this point you have created your public and private keypair and created a config file to map the identity file to a host. Now, the public key needs to be added to your bitbucket account, the steps to accomplish this (should it change in the future) can be found on the bitbucket.org website but at the time of this writing you can</p>
+
+<ul>
+<li>Login to bitbucket.org</li>
+<li>Navigate to your repository</li>
+<li>Select the Gear icon</li>
+<li>Select Deployment Keys</li>
+<li>Click Add Keys</li>
+<li>Give it a witty label (or not)</li>
+<li>Copy and paste your public key</li>
+<li>Click Add Key</li>
+</ul>
+
+
+<h4>SSH Test Connection</h4>
+
+<p>Now, back to your server, you will need to approve the host. The easiest way is to simply try to connect.</p>
+
+<pre><code>ssh jenkins-test-bitbucket
+</code></pre>
+
+<p>When prompted to continue the connection and add the host to your known hosts file type yes</p>
+
+<p>If everything has gone smooth so far you should see the following output</p>
+
+<pre><code>jenkins@localhost:/var/lib/jenkins$ ssh jenkins-test-bitbucket
+PTY allocation request failed on channel 0
+conq: logged in as myusername.
+
+You can use git or hg to connect to Bitbucket. Shell access is disabled.
+Connection to bitbucket.org closed.
+</code></pre>
+
+<p>Now that you have verified you can connect to bitbucket via ssh you need to install git, the jenkins git plugin, and configure the global settings for git.</p>
+
+<h4>Configure Git</h4>
+
+<p>Git: on debian / ubuntu you can simply</p>
+
+<pre><code>apt-get install git
+</code></pre>
+
+<p>Git Plugin: the Jenkins-CI website maintains this file, download it and place it in the JENKINS_HOME/plugins directory (mine is located /var/lib/jenkins/plugins)</p>
+
+<p>Configure git: you need to set the username and email address for your user
+Example:</p>
+
+<pre><code>git config --global user.email "jenkins@localhost"
+git config --global user.name "jenkins"
+</code></pre>
+
+<p>Obviously replace those values with what you like.</p>
+
+<h4>Configure the Jenkins Job</h4>
+
+<ul>
+<li>Login to your Jenkins website</li>
+<li>Create a new job</li>
+<li>Configure the job</li>
+<li>Select Git for your SCM option</li>
+<li>The git repo address will be in a format such as this jenkins-test-bitbucket:username/path/to/repo.git</li>
+<li>Continue configuring (for example, if you have a shell script or ant script to run after you pull the repo that runs unit tests)</li>
+<li>Save</li>
+<li>BUILD!</li>
+</ul>
+
+
+<p>If everything was successful and the planets are aligned you should see your repo pull and if you configured any scripts they should run.</p>
+
+<p>I’m sure there are others that have a better, faster way to accomplish this but this is simply how I did it and hopefully this helps someone.</p>
+]]></content>
+  </entry>
+  
+</feed>
