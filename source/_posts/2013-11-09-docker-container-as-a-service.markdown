@@ -5,17 +5,17 @@ date: 2013-11-09 01:31
 comments: true
 categories: 
 ---
-Recently we had one of our important clients come to us with a node.js application they needed updated.  I’m not sure of the circumstances surrounding this application but it looked and felt like a ball of spaghetti was thrown in my face.  I punted the modifications to another developer in favor of doing the deployment with docker and supervisord.
+Recently we had one of our important clients come to us with a node.js application they needed updated.  I'm not sure of the circumstances surrounding this application but it looked and felt like a ball of spaghetti was thrown in my face.  I punted the modifications to another developer in favor of doing the deployment with docker and supervisord.
 
 <!-- more -->
 
 ### The Problem
-This node.js application has many assumptions about libraries and file locations that make me cringe, for example it simply won’t work unless packages are installed globally **and** locally.
+This node.js application has many assumptions about libraries and file locations that make me cringe, for example it simply won't work unless packages are installed globally **and** locally.
 
 ### The Solution
 Build a docker image containing the application so that it could be deployed without touching anything outside of its container, think like a chroot.
 
-### Let’s Do It!
+### Let's Do It!
 The application we will be using can be found in my [github repository](https://github.com/taion809/hello-node).
 
 The following Dockerfile will be used to build our image.  We are using Dockerfiles because it  makes building images simple, versioned, and easily distributable.
@@ -63,7 +63,7 @@ Verify with curl
 curl -v localhost:5000
 ```
 
-At this point we have a web application running inside a docker container we can serve on port 5000.  But, we have a problem, after a reboot we need to manually run the docker run command to bring up our web app again.  Let’s solve that problem with supervisord.
+At this point we have a web application running inside a docker container we can serve on port 5000.  But, we have a problem, after a reboot we need to manually run the docker run command to bring up our web app again.  Let's solve that problem with supervisord.
 
 Supervisord is really simple and convenient which is why I am using it over something like daemontools.
 
@@ -93,9 +93,9 @@ ps aux | grep webapp
 # root      8964  0.0  0.7 186948  3600 ?        Sl   03:54   0:00 /usr/bin/docker run -p 5000:80 johnsn/webapp
 ```
 
-<!-- Logging options here… sometime. -->
+<!-- Logging options here... sometime. -->
 
-Alright, so let’s setup nginx properly so we can have webapp.com instead of webapp.com:5000
+Alright, so let's setup nginx properly so we can have webapp.com instead of webapp.com:5000
 
 ```
 ## HTTP server.

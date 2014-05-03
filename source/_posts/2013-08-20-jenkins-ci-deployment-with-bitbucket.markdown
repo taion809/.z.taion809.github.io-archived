@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-I recently had someone ask me how to get started with Jenkins-CI, git, and ssh. My team is using it now for a CI-git deployment scheme but I was not the one to install or configure it. I didn’t really want to let down my friend with an “I don’t know, google it” answer so I spun up a new EC2 instance on Amazon AWS, installed Jenkins, pushed a new private repo to bitbucket, pulled and deployed that push on my Jenkins test server.
+I recently had someone ask me how to get started with Jenkins-CI, git, and ssh. My team is using it now for a CI-git deployment scheme but I was not the one to install or configure it. I didn't really want to let down my friend with an "I don't know, google it" answer so I spun up a new EC2 instance on Amazon AWS, installed Jenkins, pushed a new private repo to bitbucket, pulled and deployed that push on my Jenkins test server.
 
 Setting up a t1.micro EC2 instance in Amazon AWS is simple enough so we can skip that.
 
@@ -21,7 +21,7 @@ For the following steps I executed them as the jenkins user, you may do it anoth
 Creating an SSH keypair for use with jenkins and bitbucket:
 From the server:
 
-    ssh-keygen -b 2048 -t rsa -c “Jenkins Deployment Keys” -f /output/path/privatekey
+    ssh-keygen -b 2048 -t rsa -c "Jenkins Deployment Keys" -f /output/path/privatekey
     chmod 0600 /output/path/privatekey
 
 Note: for my test I built the keys and configured git as the jenkins user
@@ -102,4 +102,4 @@ Obviously replace those values with what you like.
 
 If everything was successful and the planets are aligned you should see your repo pull and if you configured any scripts they should run.
 
-I’m sure there are others that have a better, faster way to accomplish this but this is simply how I did it and hopefully this helps someone.
+I'm sure there are others that have a better, faster way to accomplish this but this is simply how I did it and hopefully this helps someone.
