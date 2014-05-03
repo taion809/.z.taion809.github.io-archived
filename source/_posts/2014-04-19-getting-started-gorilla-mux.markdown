@@ -6,9 +6,7 @@ comments: true
 categories: 
 ---
  
-This is going to be short an sweet.  I have been looking at getting into Go for awhile but lacked incentive.  That has, as of a week ago, changed and it's full speed ahead.
-
-#### Let's get a flat file blog going!
+This is going to be short and sweet.  I have been looking at getting into Go for awhile but lacked incentive.  That has, as of a week ago, changed and it's full speed ahead.
 
 For this I will be using [Gorilla MUX](http://www.gorillatoolkit.org/pkg/mux).  If you haven't taken a look at the Gorilla toolkit yet I highly recommend it.  I really enjoy using it, the use as individual components really resonates with me and my style of coding.
 
